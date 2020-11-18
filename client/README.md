@@ -6,6 +6,35 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `bootstrap`
+
+1) Start Ceramic Daemon
+`ceramic daemon`
+
+2) In another tab run the following to bootstrap IDX to Ceramic Node
+`idx bootstrap`
+`idx did:create --label=local`
+`idx index:check local #use the label defined above`
+
+3) Then create a config.json file in ./src directory
+
+4) Then from root run
+`node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+`SEED=<your seed> node ./src/scripts/bootstrap`
+
+5) The cli shoud log the following: 
+```json
+Config written to src/config.json file: {
+  definitions: {
+    notes: 'kjzl6cwe1jw148gg0qxw3ca24rtxreuxg1roqlbm5j3zkfeijz9si8yhmuxx1ok'
+  },
+  schemas: {
+    Note: 'ceramic://kjzl6cwe1jw149dxbnodss8ndjqb1vrsdvksqj53kzfz2n5v8unjzvu86fi2jns',
+    NotesList: 'ceramic://kjzl6cwe1jw145w77c13w4uxovsbmwipufpbekt7n07pwvnrmn2o0zbhwoomr1c'
+  }
+}
+```
+
 ### `npm start`
 
 Runs the app in the development mode.\
