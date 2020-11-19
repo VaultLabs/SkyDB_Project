@@ -1,15 +1,8 @@
-/**
- * bootstrap.js will create and publish the schemas and definition to our Ceramic node, 
- * and store the Ceramic document ID (DocID) of the definition to a JSON 
- * file that will be used by the app:
- */
-
 const { writeFile } = require('fs').promises
 const Ceramic = require('@ceramicnetwork/ceramic-http-client').default
 const { createDefinition, publishSchema } = require('@ceramicstudio/idx-tools')
 const Wallet = require('identity-wallet').default
 const fromString = require('uint8arrays/from-string')
-require('dotenv').config();
 
 const NoteSchema = {
   $schema: 'http://json-schema.org/draft-07/schema#',
@@ -57,7 +50,7 @@ const NotesListSchema = {
   definitions: {
     CeramicDocId: {
       type: 'string',
-      pattern: '^ceramic://.+(\\\\?version=.+)?',
+      pattern: '^ceramic://.+(\\?version=.+)?',
       maxLength: 150,
     },
   },
@@ -65,15 +58,13 @@ const NotesListSchema = {
 
 async function run() {
   // Connect to the local Ceramic node
-  const ceramic = new Ceramic('http://localhost:7007')
+  const ceramic = new Ceramic('https://ceramic.3boxlabs.com')
 
   // Create a wallet and set it as the DID provider to author documents
   const wallet = await Wallet.create({
     ceramic,
     // The seed must be provided as an environment variable
     seed: fromString(process.env.SEED, 'base16'),
-    //seed: fromString('456963cbcace8f7cc6870130de836b8c9cd05cc72f87319887663b1ad606bce8', 'base16'),
-    
     getPermission() {
       // This will grant all permission requests
       return Promise.resolve([])
@@ -106,7 +97,7 @@ async function run() {
       NotesList: notesListSchemaID.toUrl('base36'),
     },
   }
-  await writeFile('../config.json', JSON.stringify(config))
+  await writeFile('./src/config.json', JSON.stringify(config))
 
   console.log('Config written to src/config.json file:', config)
   process.exit(0)

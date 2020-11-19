@@ -20,7 +20,7 @@ In the project directory, you can run:
 
 4) Then from root run
 `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
-`SEED=<your seed> node ./src/scripts/bootstrap`
+`SEED=<your seed> node ./bootstrap`
 
 5) The cli shoud log the following: 
 ```json
