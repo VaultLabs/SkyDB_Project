@@ -106,7 +106,7 @@ async function run() {
       NotesList: notesListSchemaID.toUrl('base36'),
     },
   }
-  await writeFile('../src/config.json', JSON.stringify(config))
+  await writeFile('../config.json', JSON.stringify(config))
 
   console.log('Config written to src/config.json file:', config)
   process.exit(0)
