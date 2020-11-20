@@ -1,0 +1,5 @@
+type SpatialAsset @entity {
+  id: ID!
+  owner: String!
+  active: Boolean!
+}

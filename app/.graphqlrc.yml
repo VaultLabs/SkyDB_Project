@@ -1,0 +1,8 @@
+schema: 'schema.graphql'
+documents: 'src/**/*.{graphql,tsx,jsx,ts,js}'
+extensions:
+  endpoints:
+    dev:
+      url: https://api.thegraph.com/subgraphs/name/astraldao/spatial-assets-nfts
+      subscription:
+        url: wss://api.thegraph.com/subgraphs/name/astraldao/spatial-assets-nfts

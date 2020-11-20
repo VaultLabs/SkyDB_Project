@@ -1,0 +1,27 @@
+// Import mixins
+@import 'assets/styles/mixins.scss';
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/*  ANT DESIGN MODAL */
+
+.ant-modal-header {
+  background-color: $mainBackground !important;
+  border-bottom: 1px solid $menuBg !important;
+}
+
+.ant-modal-title {
+  color: $textDefault !important;
+}
+
+.ant-modal-close-icon {
+  color: $textDefault !important;
+}
+
+.ant-modal-body {
+  background-color: $mainBackground !important;
+}
+
+.ant-modal-footer {
+  background-color: $mainBackground !important;
+  border-top: 1px solid $menuBg !important;
+}

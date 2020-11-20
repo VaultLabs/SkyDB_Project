@@ -1,0 +1,13 @@
+{
+  "schemaPath": "schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "dev": {
+        "url": "http://127.0.0.1:8000/subgraphs/name/demo/contracts-starter",
+        "subscription": {
+          "url": "http://127.0.0.1:8001/subgraphs/name/demo/contracts-starter"
+        }
+      }
+    }
+  }
+}

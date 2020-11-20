@@ -1,0 +1,57 @@
+@import 'assets/styles/mixins.scss';
+
+.item {
+  padding: rem(20);
+  border-radius: 5px;
+  border: 1px solid $textDefault;
+  margin-bottom: rem(35);
+  position: relative;
+  background: $elements;
+  :global(.slick-slide) {
+    height: auto !important;
+    background: none !important;
+  }
+}
+
+.img {
+  position: relative;
+  text-align: center;
+  height: rem(300);
+  height: rem(300);
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.mainTitle {
+  color: $white;
+  font-size: rem(31);
+  text-align: left;
+}
+
+.data {
+  color: $gray-darken;
+  font-size: rem(22);
+  display: inline;
+}
+
+.button button {
+  border-color: transparent;
+  background-color: $elements;
+  color: $textDefault;
+  min-height: 50vh;
+  font-weight: bold;
+}
+
+.button:focus button {
+  background-color: $mainBackground;
+  border-color: transparent;
+  font-weight: bold;
+  color: $white;
+}
+
+.button:hover button {
+  background-color: $mainBackground;
+  border-color: transparent;
+  font-weight: bold;
+  color: $white;
+}

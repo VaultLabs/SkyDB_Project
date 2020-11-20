@@ -1,0 +1,27 @@
+// Import mixins
+@import 'assets/styles/mixins.scss';
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/*  ANT DESIGN TABLE */
+
+.ant-table {
+  color: $textDefault;
+  background-color: $elements !important;
+}
+.ant-table th,
+td,
+tr {
+  color: $textDefault;
+  background-color: $elements !important;
+}
+
+.ant-table-column-sorters-with-tooltip {
+  color: $white;
+  background-color: $elements !important;
+  font-weight: bold;
+}
+
+.ant-table-thead > tr > th {
+  color: $white;
+  font-weight: bold;
+}
