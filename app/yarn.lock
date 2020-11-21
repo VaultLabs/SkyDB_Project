@@ -85,10 +85,10 @@
   dependencies:
     "@apollo/client" latest
 
-"@astraldao/astral-protocol-contracts@^0.0.26":
-  version "0.0.26"
-  resolved "https://npm.pkg.github.com/download/@astraldao/astral-protocol-contracts/0.0.26/67f235ce36b737d2e87cd601ee66537378c765734c8bf64a3e7a4f1159882372#ba724061d6465d65c10495f855cea7a02f78e3b0"
-  integrity sha512-Pv/lHqi+JAAwApoLd7no4i7vJelodcxK27faIyylVX3yvro/AF8GmZnbB8YrJ992gDSBWCTtQlCjQSVQetJ1kQ==
+"@astraldao/astral-protocol-contracts@^0.0.32":
+  version "0.0.32"
+  resolved "https://npm.pkg.github.com/download/@astraldao/astral-protocol-contracts/0.0.32/f2f2cc16cfc28ce70e7fc5c4d06064f6b93526047ee3219f974010f71d62aee1#59ee974878f74a0dab366ab905d92f26da360bb1"
+  integrity sha512-Wx3OGTbQ01g6rHyyqPBbafSloskwEbS4I5MZx1h26lqJv8pdYdiDmKEML/pDtouRulj1YFaYt4SDWcM9tpyG4g==
   dependencies:
     "@openzeppelin/contracts" "^3.2.0"
     "@truffle/hdwallet-provider" "^1.1.1"

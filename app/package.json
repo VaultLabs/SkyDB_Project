@@ -31,7 +31,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
     "@apollo/react-hooks": "^4.0.0",
-    "@astraldao/astral-protocol-contracts": "^0.0.26",
+    "@astraldao/astral-protocol-contracts": "^0.0.32",
     "@astraldao/astral-protocol-core": "^0.0.34",
     "@astraldao/stac-validator-js": "^0.0.20",
     "@loadable/component": "^5.13.2",

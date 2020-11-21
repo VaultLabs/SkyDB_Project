@@ -10,6 +10,11 @@ export const actions = {
   SIGNING_OUT: 'login/signing-out',
   LOGIN_SIGNOUT: 'login/signed-out',
   CANCEL_WATCH_INJECTED_PROVIDER: 'login/stop-watching-injected-provider',
+  CHECK_ROLES: 'login/check-roles',
+  CHECKING_ROLES: 'login/checking-roles',
+  ROLES_CHECKED: 'login/roles-checked',
+  REGISTRATION_SUCCEEDED: 'login/registration-succeeded',
+  STOP_CHANNEL_FORK: 'login/stop-channel-fork',
 };
 
 export const changeAuthorization = () => {
@@ -24,6 +29,12 @@ export const changeAuthorization = () => {
 export const initWeb3 = () => {
   return {
     type: actions.INIT_WEB3,
+  };
+};
+
+export const checkRoles = () => {
+  return {
+    type: actions.CHECK_ROLES,
   };
 };
 

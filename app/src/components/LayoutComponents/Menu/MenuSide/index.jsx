@@ -42,6 +42,7 @@ const MenuSide = (props) => {
     collapsed,
     dispatchSetSiderCollapse,
     isLoggedIn,
+    rolesChecked,
     dispatchSetSpatialAsset,
     loadedCogs,
     dispatchSetSelectedCog,
@@ -113,20 +114,20 @@ const MenuSide = (props) => {
 
     dispatchSetSiderCollapse(c, siderWidth);
 
-    if (!isLoggedIn && !c) {
+    if (!isLoggedIn && !rolesChecked && !c) {
       message.info('Connect to your Ethereum wallet to interact with the dApp');
     }
   };
 
   useEffect(
     function openSideBar() {
-      if (isLoggedIn) {
+      if (isLoggedIn && rolesChecked) {
         const siderWidth = parentRef.current.offsetWidth;
 
         dispatchSetSiderCollapse(false, siderWidth);
       }
     },
-    [isLoggedIn],
+    [isLoggedIn, rolesChecked],
   );
 
   useEffect(() => {
@@ -262,6 +263,7 @@ const MenuSide = (props) => {
 const mapStateToProps = (state) => ({
   collapsed: state.settings.collapsed,
   isLoggedIn: state.login.isLoggedIn,
+  rolesChecked: state.login.rolesChecked,
   loadedCogs: state.spatialAssets.loadedCogs,
   selectedCog: state.spatialAssets.selectedCog,
   fileList: state.spatialAssets.fileList,

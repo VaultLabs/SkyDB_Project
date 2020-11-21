@@ -1,15 +1,24 @@
+import { channel, eventChannel } from 'redux-saga';
 import { all, takeEvery, put, call, take, fork, select, race } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
 import { push } from 'connected-react-router';
 import { notification } from 'antd';
 import Web3 from 'web3';
 import getWeb3Modal from 'core/services/initWeb3Modal';
 import cleanWeb3Modal from 'core/services/cleanWeb3Modal';
+import {
+  actions as commitActions,
+  commitSendSuccess,
+  commitMinedSuccess,
+  commitError,
+} from 'core/redux/contracts/actions';
 import { FETCH_MENU } from 'core/redux/menu/actions';
 import { SkynetClient, defaultSkynetPortalUrl } from 'skynet-js';
 import { actions } from './actions';
 
 const getLoginState = (state) => state.login;
+const getContractsState = (state) => state.contracts;
+
+const registrationChannel = channel();
 
 function onInjectedProviderChangesChannel(web3) {
   return eventChannel((emit) => {
@@ -93,11 +102,6 @@ function* INIT_WEB3_SAGA() {
       },
     });
 
-    notification.info({
-      message: 'You may now interact with the dApp',
-      placement: 'bottomRight',
-    });
-
     if (web3Modal.cachedProvider === 'injected') {
       yield race({
         task: fork(watchInjectedProviderChanges),
@@ -118,6 +122,133 @@ function* INIT_WEB3_SAGA() {
       message: 'Error connecting',
       placement: 'bottomRight',
     });
+  }
+}
+
+/**
+ * @dev Event channel to control the smart contract update events
+ */
+function* handleRegistration() {
+  while (true) {
+    const eventAction = yield take(registrationChannel);
+    switch (eventAction.type) {
+      case commitActions.COMMIT_SEND_SUCCESS: {
+        yield put(commitSendSuccess(eventAction.tx));
+        break;
+      }
+
+      case commitActions.COMMIT_MINED_SUCCESS: {
+        yield put(commitMinedSuccess(eventAction.receipt));
+
+        yield put({
+          type: actions.REGISTRATION_SUCCEEDED,
+          payload: {
+            checkingRoles: false,
+            rolesChecked: true,
+            hasRole: true,
+          },
+        });
+
+        notification.info({
+          message: 'You may now interact with the dApp',
+          placement: 'bottomRight',
+        });
+
+        yield put({
+          type: actions.STOP_CHANNEL_FORK,
+        });
+
+        break;
+      }
+      case commitActions.COMMIT_ERROR: {
+        yield put(commitError(eventAction.error));
+        break;
+      }
+
+      case actions.STOP_CHANNEL_FORK: {
+        return;
+      }
+
+      default: {
+        break;
+      }
+    }
+  }
+}
+
+function* CHECK_ROLES_SAGA() {
+  yield put({
+    type: actions.CHECKING_ROLES,
+    payload: {
+      checkingRoles: true,
+      rolesChecked: false,
+    },
+  });
+
+  const { selectedAccount, web3 } = yield select(getLoginState);
+  const { SpatialAssets } = yield select(getContractsState);
+
+  const hasRole = yield call(
+    SpatialAssets.instance.methods.hasRole(web3.utils.sha3('MINTER_ROLE'), selectedAccount).call,
+  );
+
+  if (hasRole) {
+    yield put({
+      type: actions.ROLES_CHECKED,
+      payload: {
+        checkingRoles: false,
+        rolesChecked: true,
+        hasRole: true,
+      },
+    });
+
+    notification.info({
+      message: 'You may now interact with the dApp',
+      placement: 'bottomRight',
+    });
+  } else {
+    notification.info({
+      message: 'Your wallet will prompt you to take a commitment into the dApp so you can login',
+      placement: 'bottomRight',
+    });
+
+    // fork to handle channel
+    yield fork(handleRegistration);
+
+    const gasEstimate = yield call(SpatialAssets.instance.methods.register().estimateGas, {
+      from: selectedAccount,
+    });
+
+    try {
+      SpatialAssets.instance.methods
+        .register()
+        .send({
+          from: selectedAccount,
+          gas: gasEstimate,
+        })
+        .once('transactionHash', (tx) => {
+          registrationChannel.put({
+            type: commitActions.COMMIT_SEND_SUCCESS,
+            tx,
+          });
+        })
+        .once('receipt', (receipt) => {
+          registrationChannel.put({
+            type: commitActions.COMMIT_MINED_SUCCESS,
+            receipt,
+          });
+        })
+        .on('error', (error) => {
+          registrationChannel.put({
+            type: commitActions.COMMIT_ERROR,
+            error,
+          });
+        });
+    } catch (err) {
+      const errMsg = err.toString();
+      const shortErr = errMsg.substring(0, errMsg.indexOf('.') + 1);
+      put(commitError(shortErr));
+    }
   }
 }
 
@@ -149,5 +280,9 @@ function* LOGOUT_SAGA() {
 }
 
 export default function* rootSaga() {
-  yield all([takeEvery(actions.INIT_WEB3, INIT_WEB3_SAGA), takeEvery(actions.LOGOUT, LOGOUT_SAGA)]);
+  yield all([
+    takeEvery(actions.INIT_WEB3, INIT_WEB3_SAGA),
+    takeEvery(actions.LOGOUT, LOGOUT_SAGA),
+    takeEvery(actions.CHECK_ROLES, CHECK_ROLES_SAGA),
+  ]);
 }

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Table } from 'antd';
+import React, { useState } from 'react';
+import { Table, Popover, Button } from 'antd';
 import { connect } from 'react-redux';
 import Authorize from 'components/LayoutComponents/Authorize';
 import { useSubscription } from '@apollo/react-hooks';
@@ -7,6 +7,8 @@ import spatialAssetsSubscription from 'core/graphql/spatialAssetsSubscription';
 
 function Customization(props) {
   const { selectedAccount } = props;
+
+  const [visible, setVisible] = useState(false);
 
   const { data, loading } = useSubscription(spatialAssetsSubscription, {
     variables: {
@@ -16,6 +18,14 @@ function Customization(props) {
       },
     },
   });
+
+  const hide = () => {
+    setVisible(false);
+  };
+
+  const handleVisibleChange = (v) => {
+    setVisible(v);
+  };
 
   if (loading || !data) {
     return (
@@ -34,8 +44,6 @@ function Customization(props) {
 
   const spatialAssets = data && data.spatialAssets;
 
-  console.log(spatialAssets);
-
   const columns = [
     {
       title: 'ID',
@@ -46,6 +54,26 @@ function Customization(props) {
       title: 'Active',
       dataIndex: 'active',
       key: 'active',
+    },
+    {
+      title: 'Fetch STAC',
+      dataIndex: 'fetch',
+      key: 'fetch',
+      render: () => (
+        <Popover
+          content={
+            <Button type="link" onClick={hide}>
+              Close
+            </Button>
+          }
+          title="Title"
+          trigger="click"
+          visible={visible}
+          onVisibleChange={handleVisibleChange}
+        >
+          <Button type="primary">Click me</Button>
+        </Popover>
+      ),
     },
   ];
 

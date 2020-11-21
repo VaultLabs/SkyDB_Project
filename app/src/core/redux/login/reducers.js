@@ -10,6 +10,9 @@ const initialState = {
   web3: null,
   signingOut: false,
   isLoggedIn: false,
+  checkingRoles: false,
+  rolesChecked: false,
+  hasRole: false,
 };
 
 export default function loginReducer(state = initialState, action) {
@@ -44,6 +47,27 @@ export default function loginReducer(state = initialState, action) {
       break;
 
     case actions.SIGNING_OUT:
+      reduced = {
+        ...state,
+        ...action.payload,
+      };
+      break;
+
+    case actions.CHECKING_ROLES:
+      reduced = {
+        ...state,
+        ...action.payload,
+      };
+      break;
+
+    case actions.ROLES_CHECKED:
+      reduced = {
+        ...state,
+        ...action.payload,
+      };
+      break;
+
+    case actions.REGISTRATION_SUCCEEDED:
       reduced = {
         ...state,
         ...action.payload,
