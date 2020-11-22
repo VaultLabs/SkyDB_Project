@@ -24,9 +24,7 @@ export const loadKeyPair = async (idx, seedKey) => {
 
 export const didAuthentication = async () => {
   console.log('Authenticating...');
-
   const { authProvider, web3Modal } = await getAuthProvider();
-
   const ceramic = await ceramicPromise;
   const idx = await createIDX(ceramic, { authProvider });
 
@@ -39,6 +37,7 @@ export const didAuthentication = async () => {
     web3Modal,
   };
 };
+
 export const setupIdx = async (ceramic) => {
   console.log('Creating IDX setup...');
   // @ts-ignore
