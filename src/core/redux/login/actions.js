@@ -15,6 +15,9 @@ export const actions = {
   ROLES_CHECKED: 'login/roles-checked',
   REGISTRATION_SUCCEEDED: 'login/registration-succeeded',
   STOP_CHANNEL_FORK: 'login/stop-channel-fork',
+  AUTHENTICATED_WITH_DID: 'login/authenticated-with-did',
+  IDX_SETUP_CREATED: 'login/idx-setup-created',
+  IDX_SKYDB_LINK: 'login/idx-skydb-link',
 };
 
 export const changeAuthorization = () => {

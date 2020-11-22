@@ -8,8 +8,9 @@ const {
   useEslintRc,
 } = require('customize-cra');
 const path = require('path');
-// const { getThemeVariables } = require('antd/dist/theme');
+const { getThemeVariables } = require('antd/dist/theme');
 
+const theme = getThemeVariables({dark: true})
 module.exports = override(
   addBabelPlugin('react-hot-loader/babel'),
   useEslintRc(path.resolve(__dirname, '.eslintrc')),
@@ -24,6 +25,13 @@ module.exports = override(
   addLessLoader({
     lessOptions: {
       javascriptEnabled: true,
-    },
+      modifyVars: {
+        ...theme,
+        'primary-color': '#4ed18f',
+        'link-color': '#4ed18f',
+
+      }
+
+    }
   }),
 );

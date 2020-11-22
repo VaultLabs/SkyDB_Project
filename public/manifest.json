@@ -1,14 +1,14 @@
 {
-  "short_name": "GeoLocker",
-  "name": "Geo Locker dApp",
+  "short_name": "Geolocker",
+  "name": "Geolocker dApp",
   "icons": [
     {
-      "src": "favicon-32x32.png",
+      "src": "favicon-vaultlabs.png",
       "sizes": "32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "emblem-transparent.png",
+      "src": "vaultlabslogo.png",
       "type": "image/png",
       "sizes": "512x512"
     }

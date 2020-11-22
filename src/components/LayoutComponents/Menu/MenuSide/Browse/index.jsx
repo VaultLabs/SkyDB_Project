@@ -54,7 +54,9 @@ const Browse = (props) => {
       />
     );
   } else {
-    codeBlock = <div style={{ height: '100vh' }}>Register or load a STAC item</div>;
+    codeBlock = (
+      <div style={{ height: '100vh', textAlign: 'center' }}>Register or load a STAC item</div>
+    );
   }
 
   const button = (id) => {
@@ -84,12 +86,6 @@ const Browse = (props) => {
           </div>
         );
       }
-    } else if (!fetchingFromSkydb && fetchedFromSkydb) {
-      loadButton = (
-        <Button block type="primary" disabled onClick={() => handleStacLoad(id)}>
-          Load
-        </Button>
-      );
     } else {
       loadButton = (
         <Button block type="primary" onClick={() => handleStacLoad(id)}>

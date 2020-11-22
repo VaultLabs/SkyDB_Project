@@ -36,7 +36,7 @@ const SimpleMenuTop = (props) => {
     <div>
       <div className={styles.logo}>
         <div className={styles.logoContainer}>
-          <img src="emblem-transparent.png" alt="logo" />
+          <img src="vaultlabslogo.png" alt="logo" />
         </div>
       </div>
       <Menu selectedKeys={['title']} theme="dark" mode="horizontal">

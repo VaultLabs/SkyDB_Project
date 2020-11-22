@@ -205,17 +205,18 @@ function* REGISTER_SPATIAL_ASSET_SAGA() {
 }
 
 function* FETCH_FROM_SKYDB_SAGA(action) {
+  const { payload } = action;
+
+  const { stacId } = payload;
+
   yield put({
     type: actions.FETCHING_FROM_SKYDB,
     payload: {
       fetchingFromSkydb: true,
       fetchedFromSkydb: false,
+      spatialAssetId: stacId,
     },
   });
-
-  const { payload } = action;
-
-  const { stacId } = payload;
 
   const { skynetClient, idx, idxDefinitionID } = yield select(getLoginState);
 
@@ -236,6 +237,7 @@ function* FETCH_FROM_SKYDB_SAGA(action) {
     payload: {
       spatialAsset: skyReturn.data,
       spatialAssetLoaded: true,
+      spatialAssetId: stacId,
     },
   });
 }

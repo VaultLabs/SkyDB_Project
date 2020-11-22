@@ -11,7 +11,7 @@ import {
   commitError,
 } from 'core/redux/contracts/actions';
 import { FETCH_MENU } from 'core/redux/menu/actions';
-import { authenticate } from 'core/services/SkyDB';
+import { didAuthentication, setupIdx, linkIDXSkyDB } from 'core/services/SkyDB';
 import { actions } from './actions';
 
 // we need to import idx.ts to create the idx instance along with Ceramic
@@ -78,26 +78,64 @@ function* INIT_WEB3_SAGA() {
   });
 
   try {
-    const { authProvider, ceramic, idx, seedKey, skynetClient, web3Modal } = yield call(
-      authenticate,
-    );
+    const { authProvider, ceramic, idx, web3Modal } = yield call(didAuthentication);
+
+    yield put({
+      type: actions.AUTHENTICATED_WITH_DID,
+      payload: {
+        didAuthenticated: true,
+        authProvider,
+        ceramic,
+        idx,
+        selectedAccount: authProvider.address.toLowerCase(),
+        web3Modal,
+      },
+    });
+
+    notification.info({
+      message: `Authenticated with DID ${idx.id}`,
+      placement: 'bottomRight',
+    });
+
+    const seedKey = yield call(setupIdx, ceramic);
+
+    yield put({
+      type: actions.IDX_SETUP_CREATED,
+      payload: {
+        idxSetup: true,
+        idxDefinitionID: seedKey,
+      },
+    });
+
+    notification.info({
+      message: `IDX setup created with definition ID ${seedKey}`,
+      placement: 'bottomRight',
+    });
+
+    const skynetClient = yield call(linkIDXSkyDB, idx, seedKey);
+
+    yield put({
+      type: actions.IDX_SKYDB_LINK,
+      payload: {
+        idxSkyDBLink: true,
+        skynetClient,
+      },
+    });
+
+    notification.info({
+      message: `IDX linked to SKYDb`,
+      placement: 'bottomRight',
+    });
 
     const web3 = new Web3(authProvider.provider);
 
     yield put({
       type: actions.SET_WEB3,
       payload: {
-        initializingWeb3: false,
-        skynetClient,
-        web3Modal,
-        authProvider,
         web3,
-        selectedAccount: authProvider.address.toLowerCase(),
+        initializingWeb3: false,
         end2endLoadingIndicator: false,
         isLoggedIn: true,
-        idx,
-        ceramic,
-        idxDefinitionID: seedKey,
       },
     });
 

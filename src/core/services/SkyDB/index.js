@@ -22,7 +22,7 @@ export const loadKeyPair = async (idx, seedKey) => {
   return genKeyPairFromSeed(toString(decrypted));
 };
 
-export const authenticate = async () => {
+export const didAuthentication = async () => {
   console.log('Authenticating...');
 
   const { authProvider, web3Modal } = await getAuthProvider();
@@ -32,6 +32,14 @@ export const authenticate = async () => {
 
   console.log('Authenticated with DID:', idx.id);
 
+  return {
+    authProvider,
+    ceramic,
+    idx,
+    web3Modal,
+  };
+};
+export const setupIdx = async (ceramic) => {
   console.log('Creating IDX setup...');
   // @ts-ignore
   const schemaID = await publishSchema(ceramic, { content: SkyDBSchema });
@@ -44,6 +52,10 @@ export const authenticate = async () => {
 
   console.log('IDX setup created with definition ID:', seedKey);
 
+  return seedKey;
+};
+
+export const linkIDXSkyDB = async (idx, seedKey) => {
   const createKeyPair = async (seed) => {
     const jwe = await idx.did.createJWE(fromString(seed), [idx.id]);
     await idx.set(seedKey, jwe);
@@ -58,29 +70,7 @@ export const authenticate = async () => {
 
   await skynetClient.db.getJSON(kp.publicKey, 'hello');
 
-  /*
-  console.log(
-    'Run `kp = await createKeyPair("my seed phrase")` to save your seed with IDX and create the SkyDB key pair',
-  );
-  console.log(
-    'You can then run `kp = await loadKeyPair()` to retrieve the saved seed and create the SkyDB key pair',
-  );
-  console.log(
-    'Run `await skynet.db.setJSON(kp.privateKey, "hello", {hello: "SkyDB with IDX"})` to save data in SkyDB',
-  );
-  console.log(
-    'You can then run `await skynet.db.getJSON(kp.publicKey, "hello")` to load the saved data',
-  );
- */
-
-  return {
-    authProvider,
-    ceramic,
-    idx,
-    skynetClient,
-    web3Modal,
-    seedKey,
-  };
+  return skynetClient;
 };
 
 export const getStac = async (skynetClient, publicKey, itemId) => {

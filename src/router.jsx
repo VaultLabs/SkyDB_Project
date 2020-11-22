@@ -5,12 +5,6 @@ import loadable from '@loadable/component';
 import MainLayout from 'layouts';
 
 const routes = [
-  // Feed
-  {
-    path: '/browser',
-    component: loadable(() => import('pages/Browser')),
-    exact: true,
-  },
   // Home
   {
     path: '/map',
