@@ -13,6 +13,7 @@ const initialState = {
   spatialAssetRegistered: false,
   fetchingFromSkydb: false,
   fetchedFromSkydb: false,
+  spatialAssetId: null,
 };
 
 export default function spatialAssetsReducer(state = initialState, action) {

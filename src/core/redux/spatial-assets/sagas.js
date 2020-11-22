@@ -7,8 +7,7 @@ import {
   commitMinedSuccess,
   commitError,
 } from 'core/redux/contracts/actions';
-import { setStac, getStac } from 'core/services/SkyDB';
-import { genKeyPairFromSeed } from 'skynet-js';
+import { setStac, getStac, loadKeyPair } from 'core/services/SkyDB';
 import utils from 'utils';
 import { notification } from 'antd';
 import { actions } from './actions';
@@ -79,29 +78,34 @@ function* handleGeoDIDRegistration() {
       case commitActions.COMMIT_MINED_SUCCESS: {
         yield put(commitMinedSuccess(eventAction.receipt));
 
-        const { skynetClient } = yield select(getLoginState);
-        const { privateKey } = genKeyPairFromSeed(eventAction.itemId);
+        const { skynetClient, idx, idxDefinitionID } = yield select(getLoginState);
 
-        const sendToSkyNet = yield call(
+        const kp = yield call(loadKeyPair, idx, idxDefinitionID);
+
+        yield call(
           setStac,
           skynetClient,
-          privateKey,
+          kp.privateKey,
           eventAction.itemId,
           eventAction.spatialAsset,
         );
-
-        console.log(sendToSkyNet);
 
         yield put({
           type: actions.SPATIAL_ASSET_REGISTERED,
           payload: {
             registeringSpatialAsset: false,
             spatialAssetRegistered: true,
+            spatialAssetId: eventAction.itemId,
           },
         });
 
         yield put({
           type: actions.STOP_CHANNEL_FORK,
+        });
+
+        notification.success({
+          message: 'STAC Item successfuly registered',
+          placement: 'bottomRight',
         });
 
         break;
@@ -213,11 +217,11 @@ function* FETCH_FROM_SKYDB_SAGA(action) {
 
   const { stacId } = payload;
 
-  const { skynetClient } = yield select(getLoginState);
+  const { skynetClient, idx, idxDefinitionID } = yield select(getLoginState);
 
-  const { publicKey } = genKeyPairFromSeed(stacId);
+  const kp = yield call(loadKeyPair, idx, idxDefinitionID);
 
-  const skyReturn = yield call(getStac, skynetClient, publicKey, stacId);
+  const skyReturn = yield call(getStac, skynetClient, kp.publicKey, stacId);
 
   yield put({
     type: actions.FETCHED_FROM_SKYDB,

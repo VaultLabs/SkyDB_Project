@@ -2,6 +2,7 @@ import { channel, eventChannel } from 'redux-saga';
 import { all, takeEvery, put, call, take, fork, select, race } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import { notification } from 'antd';
+import Web3 from 'web3';
 import { cleanWeb3Modal } from 'core/services/Web3Modal';
 import {
   actions as commitActions,
@@ -77,13 +78,11 @@ function* INIT_WEB3_SAGA() {
   });
 
   try {
-    const { authProvider, ceramic, idx, skynetClient, web3Modal } = yield call(authenticate);
+    const { authProvider, ceramic, idx, seedKey, skynetClient, web3Modal } = yield call(
+      authenticate,
+    );
 
-    console.log(authProvider);
-    console.log(ceramic);
-    console.log(idx);
-
-    const selectedAccount = yield call(authProvider.eth.getCoinbase);
+    const web3 = new Web3(authProvider.provider);
 
     yield put({
       type: actions.SET_WEB3,
@@ -91,12 +90,14 @@ function* INIT_WEB3_SAGA() {
         initializingWeb3: false,
         skynetClient,
         web3Modal,
-        web3: authProvider,
-        selectedAccount: selectedAccount.toLowerCase(),
+        authProvider,
+        web3,
+        selectedAccount: authProvider.address.toLowerCase(),
         end2endLoadingIndicator: false,
         isLoggedIn: true,
         idx,
         ceramic,
+        idxDefinitionID: seedKey,
       },
     });
 

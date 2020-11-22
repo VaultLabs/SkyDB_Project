@@ -5,6 +5,7 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   ClockCircleOutlined,
+  SyncOutlined,
 } from '@ant-design/icons';
 import { Menu, Upload, Tag, Button, Descriptions, Row, Col, Progress, Select, message } from 'antd';
 import { connect } from 'react-redux';
@@ -147,6 +148,37 @@ const Register = (props) => {
     );
   }
 
+  let registerBlock;
+
+  if (!spatialAssetRegistered && !registeringSpatialAsset) {
+    registerBlock = (
+      <Button block onClick={() => handleRegister()} loading={registeringSpatialAsset}>
+        Register STAC Item on SkyDB
+      </Button>
+    );
+  } else if (!spatialAssetRegistered && registeringSpatialAsset) {
+    registerBlock = (
+      <div style={{ textAlign: 'center' }}>
+        <Tag icon={<SyncOutlined spin />} color="processing">
+          Registering STAC Item
+        </Tag>
+      </div>
+    );
+  } else if (spatialAssetRegistered && !registeringSpatialAsset) {
+    registerBlock = (
+      <>
+        <div style={{ textAlign: 'center' }}>
+          <Tag icon={<CheckCircleOutlined />} color="success">
+            STAC item registered successfuly
+          </Tag>
+        </div>
+        <Button block onClick={() => handleRegister()} loading={registeringSpatialAsset}>
+          Register another STAC Item
+        </Button>
+      </>
+    );
+  }
+
   return (
     <Menu
       theme="dark"
@@ -196,19 +228,7 @@ const Register = (props) => {
           </div>
         )}
       </SubMenu>
-      <SubMenu key="sub3">
-        {!spatialAssetRegistered ? (
-          <Button block onClick={() => handleRegister()} loading={registeringSpatialAsset}>
-            Register STAC Item on SkyDB
-          </Button>
-        ) : (
-          <Descriptions.Item>
-            <Tag icon={<CheckCircleOutlined />} color="success">
-              STAC Item successfuly registered
-            </Tag>
-          </Descriptions.Item>
-        )}
-      </SubMenu>
+      <SubMenu key="sub3">{registerBlock}</SubMenu>
     </Menu>
   );
 };

@@ -1,12 +1,10 @@
 import { createDefinition, publishSchema } from '@ceramicstudio/idx-tools';
-import { SkynetClient, keyPairFromSeed } from 'skynet-js';
+import { SkynetClient, genKeyPairFromSeed, defaultSkynetPortalUrl } from 'skynet-js';
 import { fromString, toString } from 'uint8arrays';
-
 import createCeramic from '../Ceramic';
 import createIDX from '../IDX';
 import { getAuthProvider } from '../Web3Modal';
 
-// create the ceramic instance
 const ceramicPromise = createCeramic();
 
 const SkyDBSchema = {
@@ -21,25 +19,16 @@ export const loadKeyPair = async (idx, seedKey) => {
     return null;
   }
   const decrypted = await idx.did.decryptJWE(jwe);
-  return keyPairFromSeed(toString(decrypted));
+  return genKeyPairFromSeed(toString(decrypted));
 };
 
 export const authenticate = async () => {
   console.log('Authenticating...');
 
   const { authProvider, web3Modal } = await getAuthProvider();
+
   const ceramic = await ceramicPromise;
   const idx = await createIDX(ceramic, { authProvider });
-
-  // const ceramic = await ceramicPromise
-  // const wallet = await Wallet.create({
-  //   ceramic,
-  //   seed: fromString('5608217256c8920568c7d44a27486411e5559e58f3017c41f39e3ce69ef2f728'),
-  //   getPermission() {
-  //     return Promise.resolve([])
-  //   },
-  // })
-  // const idx = await createIDX(ceramic, { provider: wallet.getDidProvider() })
 
   console.log('Authenticated with DID:', idx.id);
 
@@ -58,12 +47,12 @@ export const authenticate = async () => {
   const createKeyPair = async (seed) => {
     const jwe = await idx.did.createJWE(fromString(seed), [idx.id]);
     await idx.set(seedKey, jwe);
-    return keyPairFromSeed(seed);
+    return genKeyPairFromSeed(seed);
   };
 
   const kp = await createKeyPair('my seed phrase');
 
-  const skynetClient = new SkynetClient('https://siasky.net');
+  const skynetClient = new SkynetClient(defaultSkynetPortalUrl);
 
   await skynetClient.db.setJSON(kp.privateKey, 'hello', { hello: 'SkyDB with IDX' });
 
@@ -90,6 +79,7 @@ export const authenticate = async () => {
     idx,
     skynetClient,
     web3Modal,
+    seedKey,
   };
 };
 

@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
-import { List, Button, Menu } from 'antd';
+import { List, Button, Menu, Tag } from 'antd';
 import { connect } from 'react-redux';
 import { useSubscription } from '@apollo/react-hooks';
 import { CodeBlock, nord } from 'react-code-blocks';
 import { fetchFromSkyDB } from 'core/redux/spatial-assets/actions';
 import spatialAssetsSubscription from 'core/graphql/spatialAssetsSubscription';
+import { SyncOutlined, CheckCircleOutlined } from '@ant-design/icons';
 
 const OPEN_KEYS = ['sub1', 'sub2'];
 const { SubMenu } = Menu;
 
 const Browse = (props) => {
-  const { selectedAccount, dispatchFetchFromSkyDB, spatialAsset } = props;
+  const {
+    selectedAccount,
+    dispatchFetchFromSkyDB,
+    spatialAsset,
+    fetchingFromSkydb,
+    fetchedFromSkydb,
+    spatialAssetId,
+  } = props;
   const [openKeys, setOpenKeys] = useState(OPEN_KEYS);
 
   // const [visible, setVisible] = useState(false);
@@ -49,6 +57,49 @@ const Browse = (props) => {
     codeBlock = <div style={{ height: '100vh' }}>Register or load a STAC item</div>;
   }
 
+  const button = (id) => {
+    let loadButton;
+
+    if (id === spatialAssetId) {
+      if (!fetchingFromSkydb && !fetchedFromSkydb) {
+        loadButton = (
+          <Button block type="primary" onClick={() => handleStacLoad(id)}>
+            Load
+          </Button>
+        );
+      } else if (fetchingFromSkydb && !fetchedFromSkydb) {
+        loadButton = (
+          <div style={{ textAlign: 'center' }}>
+            <Tag icon={<SyncOutlined spin />} color="processing">
+              Loading from SkyDB
+            </Tag>
+          </div>
+        );
+      } else if (!fetchingFromSkydb && fetchedFromSkydb) {
+        loadButton = (
+          <div style={{ textAlign: 'center' }}>
+            <Tag icon={<CheckCircleOutlined />} color="success">
+              STAC item loaded
+            </Tag>
+          </div>
+        );
+      }
+    } else if (!fetchingFromSkydb && fetchedFromSkydb) {
+      loadButton = (
+        <Button block type="primary" disabled onClick={() => handleStacLoad(id)}>
+          Load
+        </Button>
+      );
+    } else {
+      loadButton = (
+        <Button block type="primary" onClick={() => handleStacLoad(id)}>
+          Load
+        </Button>
+      );
+    }
+
+    return loadButton;
+  };
   return (
     <Menu
       theme="dark"
@@ -81,11 +132,7 @@ const Browse = (props) => {
                     6,
                   )} ... ${item.id.substr(-4)}`}</div>
                 }
-                description={
-                  <Button block type="primary" onClick={() => handleStacLoad(item.id)}>
-                    Load
-                  </Button>
-                }
+                description={button(item.id)}
               />
             </List.Item>
           )}
@@ -102,6 +149,9 @@ const mapStateToProps = (state) => ({
   web3: state.login.web3,
   selectedAccount: state.login.selectedAccount,
   spatialAsset: state.spatialAssets.spatialAsset,
+  fetchingFromSkydb: state.spatialAssets.fetchingFromSkydb,
+  fetchedFromSkydb: state.spatialAssets.fetchedFromSkydb,
+  spatialAssetId: state.spatialAssets.spatialAssetId,
 });
 
 const mapStateToDispatch = (dispatch) => ({

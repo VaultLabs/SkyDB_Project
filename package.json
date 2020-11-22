@@ -29,7 +29,7 @@
     "lint:eslint": "eslint 'src/**/*.{js,jsx}'"
   },
   "dependencies": {
-    "3id-connect": "^0.1.0",
+    "3id-connect": "1.0.0-alpha.3",
     "@ant-design/icons": "^4.2.2",
     "@apollo/react-hooks": "^4.0.0",
     "@astraldao/astral-protocol-contracts": "^0.0.32",
