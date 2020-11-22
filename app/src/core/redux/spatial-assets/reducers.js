@@ -11,6 +11,8 @@ const initialState = {
   selectedCog: null,
   registeringSpatialAsset: false,
   spatialAssetRegistered: false,
+  fetchingFromSkydb: false,
+  fetchedFromSkydb: false,
 };
 
 export default function spatialAssetsReducer(state = initialState, action) {
@@ -72,6 +74,20 @@ export default function spatialAssetsReducer(state = initialState, action) {
       break;
 
     case actions.CLEAN_REGISTRATION_STATUS:
+      reduced = {
+        ...state,
+        ...action.payload,
+      };
+      break;
+
+    case actions.FETCHING_FROM_SKYDB:
+      reduced = {
+        ...state,
+        ...action.payload,
+      };
+      break;
+
+    case actions.FETCHED_FROM_SKYDB:
       reduced = {
         ...state,
         ...action.payload,

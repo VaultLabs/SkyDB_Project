@@ -1,5 +1,5 @@
 // import Ceramic from '@ceramicnetwork/ceramic-core'
-import Ceramic from '@ceramicnetwork/ceramic-http-client'
+import Ceramic from '@ceramicnetwork/ceramic-http-client';
 // import dagJose from 'dag-jose'
 // import IPFS from 'ipfs'
 // @ts-ignore
@@ -17,6 +17,6 @@ export async function createCeramic() {
   // window.ipfs = await IPFS.create({ ipld: { formats: [dagJoseFormat] } })
   // window.ceramic = await Ceramic.create(window.ipfs)
   // return window.ceramic
-  window.ceramic = new Ceramic('https://ceramic.3boxlabs.com')
-  return Promise.resolve(window.ceramic)
+  window.ceramic = new Ceramic('https://ceramic.3boxlabs.com');
+  return Promise.resolve(window.ceramic);
 }

@@ -10,6 +10,9 @@ export const actions = {
   SPATIAL_ASSET_REGISTERED: 'spatial-assets/SPATIAL_ASSET_REGISTERED',
   STOP_CHANNEL_FORK: 'spatial-assets/STOP_CHANNEL_FORK',
   CLEAN_REGISTRATION_STATUS: 'spatial-assets/REGISTRATION_CLEANED',
+  FETCH_FROM_SKYDB: 'spatial-assets/FETCH_FROM_SKYDB',
+  FETCHING_FROM_SKYDB: 'spatial-assets/FETCHING_FROM_SKYDB',
+  FETCHED_FROM_SKYDB: 'spatial-assets/FETCHED_FROM_SKYDB',
 };
 
 export const setFileList = (fileList) => {
@@ -71,6 +74,15 @@ export const cleanRegistrationStatus = () => {
     type: actions.CLEAN_REGISTRATION_STATUS,
     payload: {
       spatialAssetRegistered: false,
+    },
+  };
+};
+
+export const fetchFromSkyDB = (stacId) => {
+  return {
+    type: actions.FETCH_FROM_SKYDB,
+    payload: {
+      stacId,
     },
   };
 };

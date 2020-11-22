@@ -2,19 +2,15 @@ import React, { useState } from 'react';
 import { List, Button, Menu } from 'antd';
 import { connect } from 'react-redux';
 import { useSubscription } from '@apollo/react-hooks';
-// import Inspector from 'react-inspector';
 import { CodeBlock, nord } from 'react-code-blocks';
-// import JSONViewer from 'react-json-viewer';
-// import ReactJson from 'react-json-view';
+import { fetchFromSkyDB } from 'core/redux/spatial-assets/actions';
 import spatialAssetsSubscription from 'core/graphql/spatialAssetsSubscription';
-import stac from './stac.json';
 
-const OPEN_KEYS = ['sub1'];
+const OPEN_KEYS = ['sub1', 'sub2'];
 const { SubMenu } = Menu;
-// const getJsonIndented = (obj) => JSON.stringify(newObj, null, 4).replace(/["{[,\}\]]/g, '');
 
 const Browse = (props) => {
-  const { selectedAccount } = props;
+  const { selectedAccount, dispatchFetchFromSkyDB, spatialAsset } = props;
   const [openKeys, setOpenKeys] = useState(OPEN_KEYS);
 
   // const [visible, setVisible] = useState(false);
@@ -28,8 +24,30 @@ const Browse = (props) => {
     },
   });
 
-  const spatialAssets = data && data.spatialAssets;
+  const browsedSpatialAssets = data && data.spatialAssets;
   const onOpenChange = (okeys) => setOpenKeys([...OPEN_KEYS, ...okeys]);
+
+  const handleStacLoad = (stacId) => {
+    dispatchFetchFromSkyDB(stacId);
+  };
+
+  let codeBlock;
+
+  if (spatialAsset && Object.entries(spatialAsset).length !== 0) {
+    codeBlock = (
+      <CodeBlock
+        customStyle={{
+          height: '100vh',
+          overflow: 'scroll',
+        }}
+        text={JSON.stringify(spatialAsset, null, 2)}
+        language="json"
+        theme={nord}
+      />
+    );
+  } else {
+    codeBlock = <div style={{ height: '100vh' }}>Register or load a STAC item</div>;
+  }
 
   return (
     <Menu
@@ -45,16 +63,13 @@ const Browse = (props) => {
           loading={loading || !data}
           size="large"
           pagination={{
-            onChange: (page) => {
-              console.log(page);
-            },
             pageSize: 2,
           }}
           dataSource={
-            spatialAssets &&
-            spatialAssets.map((spatialAsset) => ({
-              id: spatialAsset.id,
-              active: spatialAsset.active.toString(),
+            browsedSpatialAssets &&
+            browsedSpatialAssets.map((sA) => ({
+              id: sA.id,
+              active: sA.active.toString(),
             }))
           }
           renderItem={(item) => (
@@ -67,7 +82,7 @@ const Browse = (props) => {
                   )} ... ${item.id.substr(-4)}`}</div>
                 }
                 description={
-                  <Button block type="primary">
+                  <Button block type="primary" onClick={() => handleStacLoad(item.id)}>
                     Load
                   </Button>
                 }
@@ -77,17 +92,7 @@ const Browse = (props) => {
         />
       </SubMenu>
       <SubMenu key="sub2" title="Loaded STAC Item">
-        <div>
-          <CodeBlock
-            customStyle={{
-              height: '100vh',
-              overflow: 'scroll',
-            }}
-            text={JSON.stringify(stac, null, 2)}
-            language="json"
-            theme={nord}
-          />
-        </div>
+        {codeBlock}
       </SubMenu>
     </Menu>
   );
@@ -96,6 +101,11 @@ const Browse = (props) => {
 const mapStateToProps = (state) => ({
   web3: state.login.web3,
   selectedAccount: state.login.selectedAccount,
+  spatialAsset: state.spatialAssets.spatialAsset,
 });
 
-export default connect(mapStateToProps, null)(Browse);
+const mapStateToDispatch = (dispatch) => ({
+  dispatchFetchFromSkyDB: (stacId) => dispatch(fetchFromSkyDB(stacId)),
+});
+
+export default connect(mapStateToProps, mapStateToDispatch)(Browse);

@@ -15,7 +15,7 @@ import { FETCH_MENU } from 'core/redux/menu/actions';
 import { SkynetClient, defaultSkynetPortalUrl } from 'skynet-js';
 import { actions } from './actions';
 
-// we need to import idx.ts to create the idx instance along with Ceramic 
+// we need to import idx.ts to create the idx instance along with Ceramic
 
 const getLoginState = (state) => state.login;
 const getContractsState = (state) => state.contracts;

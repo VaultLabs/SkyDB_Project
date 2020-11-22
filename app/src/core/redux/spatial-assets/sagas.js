@@ -7,7 +7,7 @@ import {
   commitMinedSuccess,
   commitError,
 } from 'core/redux/contracts/actions';
-import { setStac } from 'core/services/SkyDB';
+import { setStac, getStac } from 'core/services/SkyDB';
 import { genKeyPairFromSeed } from 'skynet-js';
 import utils from 'utils';
 import { notification } from 'antd';
@@ -200,9 +200,45 @@ function* REGISTER_SPATIAL_ASSET_SAGA() {
   }
 }
 
+function* FETCH_FROM_SKYDB_SAGA(action) {
+  yield put({
+    type: actions.FETCHING_FROM_SKYDB,
+    payload: {
+      fetchingFromSkydb: true,
+      fetchedFromSkydb: false,
+    },
+  });
+
+  const { payload } = action;
+
+  const { stacId } = payload;
+
+  const { skynetClient } = yield select(getLoginState);
+
+  const { publicKey } = genKeyPairFromSeed(stacId);
+
+  const skyReturn = yield call(getStac, skynetClient, publicKey, stacId);
+
+  yield put({
+    type: actions.FETCHED_FROM_SKYDB,
+    payload: {
+      fetchingFromSkydb: false,
+      fetchedFromSkydb: true,
+    },
+  });
+
+  yield put({
+    type: actions.SET_SPATIAL_ASSET,
+    payload: {
+      spatialAsset: skyReturn.data,
+      spatialAssetLoaded: true,
+    },
+  });
+}
 export default function* rootSaga() {
   yield all([
     takeEvery(actions.LOAD_COGS, LOAD_COGS_SAGA),
     takeEvery(actions.REGISTER_SPATIAL_ASSET, REGISTER_SPATIAL_ASSET_SAGA),
+    takeEvery(actions.FETCH_FROM_SKYDB, FETCH_FROM_SKYDB_SAGA),
   ]);
 }

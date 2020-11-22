@@ -1,33 +1,33 @@
-import { createDefinition, publishSchema } from '@ceramicstudio/idx-tools'
-import { JWE } from 'did-jwt'
-import { DID } from 'dids'
-import { SkynetClient, keyPairFromSeed } from 'skynet-js'
+import { createDefinition, publishSchema } from '@ceramicstudio/idx-tools';
+// import { JWE } from 'did-jwt';
+// import { DID } from 'dids';
+import { SkynetClient, keyPairFromSeed } from 'skynet-js';
 // @ts-ignore
-import { fromString, toString } from 'uint8arrays'
+import { fromString, toString } from 'uint8arrays';
 
-import { createCeramic } from '../Ceramic'
-import { createIDX } from '../IDX'
+import { createCeramic } from '../Ceramic';
+import { createIDX } from '../IDX';
 
-// not implemented yet 
-//import { getAuthProvider } from './wallet'
+// not implemented yet
+// import { getAuthProvider } from './wallet'
 
-window.keyPairFromSeed = keyPairFromSeed
-window.skynet = new SkynetClient('https://siasky.net')
+window.keyPairFromSeed = keyPairFromSeed;
+window.skynet = new SkynetClient('https://siasky.net');
 
-// create the ceramic instance 
-const ceramicPromise = createCeramic()
+// create the ceramic instance
+const ceramicPromise = createCeramic();
 
 const SkyDBSchema = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   title: 'SkyDB',
   type: 'object',
-}
+};
 
 const authenticate = async () => {
-  console.log('Authenticating...')
+  console.log('Authenticating...');
 
-  const [authProvider, ceramic] = await Promise.all([getAuthProvider(), ceramicPromise])
-  const idx = await createIDX(ceramic, { authProvider })
+  //  const [authProvider, ceramic] = await Promise.all([getAuthProvider(), ceramicPromise]);
+  const idx = await createIDX(ceramic, { authProvider });
 
   // const ceramic = await ceramicPromise
   // const wallet = await Wallet.create({
@@ -39,56 +39,58 @@ const authenticate = async () => {
   // })
   // const idx = await createIDX(ceramic, { provider: wallet.getDidProvider() })
 
-  window.did = idx.did
-  console.log('Authenticated with DID:', idx.id)
+  window.did = idx.did;
+  console.log('Authenticated with DID:', idx.id);
 
-  console.log('Creating IDX setup...')
+  console.log('Creating IDX setup...');
   // @ts-ignore
-  const schemaID = await publishSchema(ceramic, { content: SkyDBSchema })
+  const schemaID = await publishSchema(ceramic, { content: SkyDBSchema });
   const definitionID = await createDefinition(ceramic, {
     name: 'SkyDB',
     description: 'SkyDB seed',
     schema: schemaID.toUrl('base36'),
-  })
-  const seedKey = definitionID.toString()
-  console.log('IDX setup created with definition ID:', seedKey)
+  });
+  const seedKey = definitionID.toString();
+  console.log('IDX setup created with definition ID:', seedKey);
 
   const createKeyPair = async (seed) => {
-    const jwe = await idx.did.createJWE(fromString(seed), [idx.id])
-    await idx.set(seedKey, jwe)
-    return keyPairFromSeed(seed)
-  }
+    const jwe = await idx.did.createJWE(fromString(seed), [idx.id]);
+    await idx.set(seedKey, jwe);
+    return keyPairFromSeed(seed);
+  };
   // @ts-ignore
-  window.createKeyPair = createKeyPair
+  window.createKeyPair = createKeyPair;
 
   const loadKeyPair = async () => {
-    const jwe = await idx.get(seedKey)
+    const jwe = await idx.get(seedKey);
     if (jwe == null) {
-      return null
+      return null;
     }
-    const decrypted = await idx.did.decryptJWE(jwe)
-    return keyPairFromSeed(toString(decrypted))
-  }
+    const decrypted = await idx.did.decryptJWE(jwe);
+    return keyPairFromSeed(toString(decrypted));
+  };
   // @ts-ignore
-  window.loadKeyPair = loadKeyPair
+  window.loadKeyPair = loadKeyPair;
 
-  console.log('Next steps:')
+  console.log('Next steps:');
   console.log(
-    'Run `kp = await createKeyPair("my seed phrase")` to save your seed with IDX and create the SkyDB key pair'
-  )
+    'Run `kp = await createKeyPair("my seed phrase")` to save your seed with IDX and create the SkyDB key pair',
+  );
   console.log(
-    'You can then run `kp = await loadKeyPair()` to retrieve the saved seed and create the SkyDB key pair'
-  )
+    'You can then run `kp = await loadKeyPair()` to retrieve the saved seed and create the SkyDB key pair',
+  );
   console.log(
-    'Run `await skynet.db.setJSON(kp.privateKey, "hello", {hello: "SkyDB with IDX"})` to save data in SkyDB'
-  )
+    'Run `await skynet.db.setJSON(kp.privateKey, "hello", {hello: "SkyDB with IDX"})` to save data in SkyDB',
+  );
   console.log(
-    'You can then run `await skynet.db.getJSON(kp.publicKey, "hello")` to load the saved data'
-  )
-}
+    'You can then run `await skynet.db.getJSON(kp.publicKey, "hello")` to load the saved data',
+  );
+};
 
+/*
 document.getElementById('bauth')?.addEventListener('click', () => {
   authenticate().catch((err) => {
-    console.error('Failed to authenticate:', err)
-  })
-})
+    console.error('Failed to authenticate:', err);
+  });
+});
+*/
