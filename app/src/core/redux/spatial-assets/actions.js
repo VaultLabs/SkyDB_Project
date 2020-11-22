@@ -9,6 +9,7 @@ export const actions = {
   REGISTERING_SPATIAL_ASSET: 'spatial-assets/REGISTERING_SPATIAL_ASSET',
   SPATIAL_ASSET_REGISTERED: 'spatial-assets/SPATIAL_ASSET_REGISTERED',
   STOP_CHANNEL_FORK: 'spatial-assets/STOP_CHANNEL_FORK',
+  CLEAN_REGISTRATION_STATUS: 'spatial-assets/REGISTRATION_CLEANED',
 };
 
 export const setFileList = (fileList) => {
@@ -62,5 +63,14 @@ export const setSelectedCog = (selectedCog) => {
 export const registerSpatialAsset = () => {
   return {
     type: actions.REGISTER_SPATIAL_ASSET,
+  };
+};
+
+export const cleanRegistrationStatus = () => {
+  return {
+    type: actions.CLEAN_REGISTRATION_STATUS,
+    payload: {
+      spatialAssetRegistered: false,
+    },
   };
 };

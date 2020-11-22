@@ -71,6 +71,13 @@ export default function spatialAssetsReducer(state = initialState, action) {
       };
       break;
 
+    case actions.CLEAN_REGISTRATION_STATUS:
+      reduced = {
+        ...state,
+        ...action.payload,
+      };
+      break;
+
     default:
       reduced = state;
   }
