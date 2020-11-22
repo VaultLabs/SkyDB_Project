@@ -12,7 +12,7 @@ import Ceramic from '@ceramicnetwork/ceramic-http-client';
 // @ts-ignore
 // const dagJoseFormat = legacy(multiformats, dagJose.name)
 
-export async function createCeramic() {
+export default async function createCeramic() {
   // @ts-ignore
   // window.ipfs = await IPFS.create({ ipld: { formats: [dagJoseFormat] } })
   // window.ceramic = await Ceramic.create(window.ipfs)

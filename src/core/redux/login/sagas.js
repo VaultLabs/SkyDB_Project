@@ -2,9 +2,7 @@ import { channel, eventChannel } from 'redux-saga';
 import { all, takeEvery, put, call, take, fork, select, race } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import { notification } from 'antd';
-import Web3 from 'web3';
-import getWeb3Modal from 'core/services/initWeb3Modal';
-import cleanWeb3Modal from 'core/services/cleanWeb3Modal';
+import { cleanWeb3Modal } from 'core/services/Web3Modal';
 import {
   actions as commitActions,
   commitSendSuccess,
@@ -12,7 +10,7 @@ import {
   commitError,
 } from 'core/redux/contracts/actions';
 import { FETCH_MENU } from 'core/redux/menu/actions';
-import { SkynetClient, defaultSkynetPortalUrl } from 'skynet-js';
+import { authenticate } from 'core/services/SkyDB';
 import { actions } from './actions';
 
 // we need to import idx.ts to create the idx instance along with Ceramic
@@ -79,28 +77,26 @@ function* INIT_WEB3_SAGA() {
   });
 
   try {
-    const web3Modal = yield call(getWeb3Modal);
+    const { authProvider, ceramic, idx, skynetClient, web3Modal } = yield call(authenticate);
 
-    const provider = yield call(web3Modal.connect);
+    console.log(authProvider);
+    console.log(ceramic);
+    console.log(idx);
 
-    const web3 = new Web3(provider);
-
-    const selectedAccount = yield call(web3.eth.getCoinbase);
-
-    // init skynet
-    const skynetClient = new SkynetClient(defaultSkynetPortalUrl);
+    const selectedAccount = yield call(authProvider.eth.getCoinbase);
 
     yield put({
       type: actions.SET_WEB3,
       payload: {
         initializingWeb3: false,
         skynetClient,
-        provider,
         web3Modal,
-        web3,
+        web3: authProvider,
         selectedAccount: selectedAccount.toLowerCase(),
         end2endLoadingIndicator: false,
         isLoggedIn: true,
+        idx,
+        ceramic,
       },
     });
 

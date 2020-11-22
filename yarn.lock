@@ -2,6 +2,17 @@
 # yarn lockfile v1
 
 
+"3id-blockchain-utils@^0.4.0":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/3id-blockchain-utils/-/3id-blockchain-utils-0.4.1.tgz#09b08bec30e0ca9f376b779f8454c02ae4e6c9df"
+  integrity sha512-z7Qb4CuTVg/ug3i7/Gp+l9ZebNAcz4fPFEjXnS8gwA+mAvRUl4uCF2psvcQJtWtImLvznFwUAtXDG9T0N6ylLA==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+    "@ethersproject/contracts" "^5.0.1"
+    "@ethersproject/providers" "^5.0.4"
+    "@ethersproject/wallet" "^5.0.1"
+    js-sha256 "^0.9.0"
+
 "3id-blockchain-utils@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/3id-blockchain-utils/-/3id-blockchain-utils-1.1.0.tgz#d0b426c6a8c813f48c4575d3416be0603ab58e3a"
@@ -16,6 +27,18 @@
     uint8arrays "^1.1.0"
   optionalDependencies:
     "@zondax/filecoin-signing-tools" "^0.12.0"
+
+"3id-connect@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/3id-connect/-/3id-connect-0.1.0.tgz#d178cf8df27453421c67de3399a21c6c61aede47"
+  integrity sha512-GXmlIIFTZLh58I8b1VR3gjybG7oENXJ+LkQlPTFyw8f5IKbcn6uGjybrJABZDsGS5o0OfAL4IxNdHIpgcopcdw==
+  dependencies:
+    "3id-blockchain-utils" "^0.4.0"
+    "@babel/runtime" "^7.1.2"
+    identity-wallet "^1.3.0"
+    postmsg-rpc "^2.4.0"
+    store "^2.0.12"
+    url-parse "^1.4.7"
 
 "3id-connect@^1.0.0-alpha.3":
   version "1.0.0-alpha.4"
@@ -1686,7 +1709,7 @@
     "@ethersproject/properties" "^5.0.4"
     "@ethersproject/strings" "^5.0.4"
 
-"@ethersproject/hdnode@^5.0.3", "@ethersproject/hdnode@^5.0.4", "@ethersproject/hdnode@^5.0.5":
+"@ethersproject/hdnode@^5.0.1", "@ethersproject/hdnode@^5.0.3", "@ethersproject/hdnode@^5.0.4", "@ethersproject/hdnode@^5.0.5":
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/@ethersproject/hdnode/-/hdnode-5.0.6.tgz#5bc1f30a9c1228aaa84bb209e5b54b30b8b5aea3"
   integrity sha512-cS2xZJZP7Tsaz695U0G3gdTYZatmSjHWY/VQGVc/E1DnLSBz0ZfQaikhU5uzDNLYaOfcEKd7helezrsfU2xguw==
@@ -6904,7 +6927,7 @@ detect-port-alt@1.1.6:
     address "^1.0.1"
     debug "^2.6.0"
 
-did-jwt@^4.0.0, did-jwt@^4.6.2:
+did-jwt@^4.0.0, did-jwt@^4.4.0, did-jwt@^4.6.2:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/did-jwt/-/did-jwt-4.7.0.tgz#355e5399b1224480f5222e08c5871a34f7c391a5"
   integrity sha512-tkiZk4gukBAtnhqooBSBW0XYrjXIxEhk/bIHvr6VIwilFL9gQrceJOuJqZuE8s5/UbiUClINv6nOJ+DGPio0DQ==
@@ -9811,6 +9834,27 @@ identity-obj-proxy@3.0.0:
   dependencies:
     harmony-reflect "^1.4.6"
 
+identity-wallet@^1.3.0:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/identity-wallet/-/identity-wallet-1.4.1.tgz#83f27474dc034dce1701f70849411f43c70bd24b"
+  integrity sha512-VRlpoin4gXqn6q1lx0rvTZn4lWCjRLQ6TcOigFPJgCF3mCWEqWcvwEsXIZR9vybX7N6Voiw3A1l1sqniVXfnnA==
+  dependencies:
+    "3id-blockchain-utils" "^0.4.0"
+    "@babel/runtime" "^7.4.5"
+    "@ethersproject/hdnode" "^5.0.1"
+    "@ethersproject/wallet" "^5.0.1"
+    did-jwt "^4.4.0"
+    events "^3.2.0"
+    fast-json-stable-stringify "^2.1.0"
+    ipfs-did-document "^1.2.3"
+    ipld-dag-cbor "^0.15.3"
+    js-sha256 "^0.9.0"
+    multihashes "^1.0.1"
+    rpc-utils "^0.1.2"
+    store "^2.0.12"
+    tweetnacl "^1.0.3"
+    tweetnacl-util "^0.15.1"
+
 identity-wallet@^2.0.0-alpha.17:
   version "2.0.0-alpha.20"
   resolved "https://registry.yarnpkg.com/identity-wallet/-/identity-wallet-2.0.0-alpha.20.tgz#fff98f55ba428ce42ea334080a7b6d43e1121968"
@@ -10110,6 +10154,11 @@ ipfs-core-utils@^0.5.2:
     multiaddr "^8.0.0"
     multiaddr-to-uri "^6.0.0"
     uint8arrays "^1.1.0"
+
+ipfs-did-document@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/ipfs-did-document/-/ipfs-did-document-1.2.3.tgz#935ec5cbefa94adc3ab66bd8a87713783ea2b06a"
+  integrity sha512-LLcmDbj9m+kBS8srL1Mq3oOgSOuqTe9lyj70DhjQkd+T+4xj1plkiYanbB6w600e/XOHnGxbbOkKYOpRs0vpgw==
 
 ipfs-http-client@^47.0.1:
   version "47.0.1"
@@ -18434,7 +18483,7 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tweetnacl-util@^0.15.0:
+tweetnacl-util@^0.15.0, tweetnacl-util@^0.15.1:
   version "0.15.1"
   resolved "https://registry.yarnpkg.com/tweetnacl-util/-/tweetnacl-util-0.15.1.tgz#b80fcdb5c97bcc508be18c44a4be50f022eea00b"
   integrity sha512-RKJBIj8lySrShN4w6i/BonWp2Z/uxwC3h4y7xsRrpP59ZboCd0GpEVsOnMDYLMmKBpYhb5TgHzZXy7wTfYFBRw==
@@ -18444,7 +18493,7 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
 
-tweetnacl@^1.0.0:
+tweetnacl@^1.0.0, tweetnacl@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.3.tgz#ac0af71680458d8a6378d0d0d050ab1407d35596"
   integrity sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==
