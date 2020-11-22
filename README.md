@@ -1,5 +1,8 @@
 # SkyDB_IDX_Project
 
+### Skynet URL: 
+https://siasky.net/LACxsA6d6wQVF7pOdJlljYCtvAV-E94XvmVLfSwFELqVXw
+
 ## Introduction
 Spatial data contains information relevant to locations in the physical world. Different locations have different rules - depending on where you are you have to abide to a different regulatory framework.
 
@@ -20,6 +23,9 @@ For the SkyDB hackathon we decided to create our alpha prototype of the GeoLocke
 
 ## Future Iterations and Value
 In further iterations, we hope to add more value to the Skynet and Ceramic Ecosystems, by furthering the development of our GeoDID specification. We hope to create the GeoDID specification as a web3 means to organize and utilize geo-spatial data. These GeoDIDs will contain several service endpoints that have web3 optimized geospatial data. 
+
+## SkyDB x IDX Hackathon 
+For this bounty, we’re looking for someone to build a project that makes use of IDX as an identity protocol alongside SkyDB. To achieve this, during onboarding you can use the IDX SDK to import or create identities, add your user’s SkyDB instance for your application to their identity index, and query their index for their data stored throughout the Web3 ecosystem – on any other Web3 platform. Feel free to use IDX for additional in-app features such as user profiles, social graphs, or anything else you can imagine. IDX allows you to store this identity metadata natively in documents on the Ceramic network, where it can be consumed everywhere across the Web3 ecosystem – within Sia applications and beyond.
 
 ### Submission Requirements:
 - The project must be open source
