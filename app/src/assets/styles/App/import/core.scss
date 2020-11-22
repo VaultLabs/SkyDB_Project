@@ -2,7 +2,7 @@
 
 html {
   font-size: 13px;
-  overflow-y: scroll;
+  overflow-y: hidden;
   @media (max-width: $sm-max-width) {
     font-size: 12px;
   }

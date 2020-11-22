@@ -160,7 +160,7 @@ const Map = (props) => {
       ref={parentRef}
     >
       <ReactMapGL
-        mapStyle="mapbox://styles/j-mars/ckfzijcqx19ib19qvzig1latd"
+        mapStyle="mapbox://styles/j-mars/ckhsfy2if2w8d19mteyfb2z1u"
         mapboxApiAccessToken={process.env.REACT_APP_MapboxAccessToken}
         // eslint-disable-next-line
         {...viewport}
