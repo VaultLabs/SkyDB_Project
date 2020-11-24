@@ -1,8 +1,8 @@
 # Geolocker
 
-<p style="text-align: center; font-size: 24px;">SkyDB Geolocker - a dApp for storing Spatio Temporal Asset Catalogs (https://stacspec.org) over Skynet, using Ceramic, IDX and The Graph</p>
+### SkyDB Geolocker - a dApp for storing Spatio Temporal Asset Catalogs (https://stacspec.org) over Skynet, using Ceramic, IDX and The Graph
 
-<p style="text-align: center; font-size: 14px;">Note: The project builds in development mode with a 3id-connect warning, but fails in production: `Critical dependency: the request of a dependency is an expression`. We are already in discussion with the Ceramic team and the issue is being tracked [here](https://github.com/3box/3id-connect/issues/86)</p>
+Note: The project builds in development mode with a 3id-connect warning, but fails in production: `Critical dependency: the request of a dependency is an expression`. We are already in discussion with the Ceramic team and the issue is being tracked [here](https://github.com/3box/3id-connect/issues/86)
 
 ### [Submission Video](https://www.youtube.com/watch?v=YZ0QWzr-mQk&feature=youtu.be)
 
