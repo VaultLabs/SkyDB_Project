@@ -8,7 +8,7 @@ Note: The project builds in development mode with a 3id-connect warning, but fai
 
 ### [Geolocker dApp over Skynet](https://siasky.net/LACxsA6d6wQVF7pOdJlljYCtvAV-E94XvmVLfSwFELqVXw) (did not build because of 3id-connect error)
 
-### [Geolocker dApp over Netlify](https://geolocker.vaultlabs.org) (did not build because of 3id-connect error)
+### [Geolocker dApp over Netlify](https://geolocker.vaultlabs.org) (with CI=false in envinronmental variables so that build is possible)
 
 ### [Geolocker Subgraph for the registry Smart Contract](https://api.thegraph.com/subgraphs/name/vaultlabs/skydb-bounty-geo-browser)
 
